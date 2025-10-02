@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบประชาสัมพันธ์หน่วยงาน</title>
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #800000; /* สีแดงเลือดหมูแบบในภาพตัวอย่าง */
+      color: white;
+    }
+    header input[type="file"],
+    header input[type="color"],
+    header select {
+      margin-left: 10px;
+    }
+    .section {
+      padding: 20px;
+      background-color: white;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .preview {
+      border: 2px dashed #aaa;
+      padding: 20px;
+      margin: 20px;
+      background-color: #fff;
+    }
+    .image-upload input {
+      display: block;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #800000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a00000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ส่วนหัว -->
+  <header>
+    <div>
+      <label>โลโก้หน่วยงาน: <input type="file" id="logoUpload" accept="image/*" /></label>
+      <label>พื้นหลัง: <input type="color" id="bgColor" value="#800000" /></label>
+      <label>แบบตัวอักษร:
+        <select id="fontSelect">
+          <option value="Prompt">Prompt</option>
+          <option value="TH Sarabun New">TH Sarabun New</option>
+          <option value="Arial">Arial</option>
+        </select>
+      </label>
+      <label>สีตัวอักษร: <input type="color" id="textColor" value="#ffffff" /></label>
+    </div>
+    <h1 id="agencyName">สถานีตำรวจภูธรองค์พระ</h1>
+  </header>
+
+  <!-- ส่วนหัวเรื่อง -->
+  <div class="section">
+    <label>หัวเรื่อง: <input type="text" id="headline" style="width:100%; font-size:1.2em;" /></label><br/>
+    <label>สีพื้นหลังหัวเรื่อง: <input type="color" id="headlineBg" value="#eeeeee" /></label>
+  </div>
+
+  <!-- ส่วนเนื้อหา -->
+  <div class="section">
+    <label>เนื้อหา: <textarea id="mainContent" rows="8" style="width:100%;"></textarea></label>
+  </div>
+
+  <!-- ส่วนภาพประกอบ -->
+  <div class="section image-upload">
+    <label>ภาพประกอบ (สูงสุด 5 ภาพ):</label><br/>
+    <input type="file" accept="image/*" multiple id="imageUpload" />
+  </div>
+
+  <!-- ปุ่ม Preview และ Download -->
+  <div class="section">
+    <button onclick="generatePreview()">Preview</button>
+    <button onclick="downloadAsImage()">Download JPG</button>
+  </div>
+
+  <!-- พื้นที่แสดง Preview -->
+  <div id="previewArea" class="preview"></div>
+
+  <!-- Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    function generatePreview() {
+      const preview = document.getElementById('previewArea');
+      preview.innerHTML = '';
+
+      const logoFile = document.getElementById('logoUpload').files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const logoImg = document.createElement('img');
+        logoImg.src = e.target.result;
+        logoImg.style.height = '80px';
+        preview.appendChild(logoImg);
+      };
+      if (logoFile) reader.readAsDataURL(logoFile);
+
+      const agencyName = document.getElementById('agencyName').textContent;
+      const headline = document.getElementById('headline').value;
+      const content = document.getElementById('mainContent').value;
+      const font = document.getElementById('fontSelect').value;
+      const textColor = document.getElementById('textColor').value;
+      const headlineBg = document.getElementById('headlineBg').value;
+
+      preview.style.fontFamily = font;
+      preview.style.color = textColor;
+
+      const headlineDiv = document.createElement('div');
+      headlineDiv.textContent = headline;
+      headlineDiv.style.backgroundColor = headlineBg;
+      headlineDiv.style.padding = '10px';
+      headlineDiv.style.fontSize = '1.5em';
+      preview.appendChild(headlineDiv);
+
+      const contentDiv = document.createElement('div');
+      contentDiv.textContent = content;
+      contentDiv.style.marginTop = '10px';
+      preview.appendChild(contentDiv);
+
+      const imageFiles = document.getElementById('imageUpload').files;
+      for (let i = 0; i < Math.min(imageFiles.length, 5); i++) {
+        const imgReader = new FileReader();
+        imgReader.onload = function(e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.width = '200px';
+          img.style.margin = '10px';
+          preview.appendChild(img);
+        };
+        imgReader.readAsDataURL(imageFiles[i]);
+      }
+    }
+
+    function downloadAsImage() {
+      html2canvas(document.getElementById('previewArea')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'preview.jpg';
+        link.href = canvas.toDataURL('image/jpeg');
+        link.click();
+      });
+    }
+  </script>
+
+</body>
+</html>
