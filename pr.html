@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Template - รายงานองค์กร</title>
+  <title>Template - รายงานองค์กร (Header Background)</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -12,35 +12,57 @@
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root { --primary-bg: #0ea5a4; --accent-bg: #f97316; }
     html,body { height:100%; font-family: 'Sarabun', sans-serif; }
-    /* ให้ tailwind รู้จักฟอนต์ */
     .font-th { font-family: 'Sarabun', sans-serif; }
-    /* พื้นที่ตัวอย่างที่จะแปลงเป็นรูปภาพ */
     #previewArea { width: 100%; max-width: 900px; margin: 0 auto; }
+    /* ส่วนหัว: ให้ภาพ background ปรับ cover และ center */
+    .header-bg {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background 200ms ease;
+    }
+    /* overlay เพื่อให้ข้อความอ่านง่ายเมื่อใช้ภาพพื้นหลัง */
+    .header-overlay {
+      background: rgba(0,0,0,0.18);
+    }
   </style>
 </head>
 <body class="bg-gray-100 font-th text-gray-800">
 
   <div class="min-h-screen p-6">
 
-    <!-- ส่วนหัว: โลโก้และชื่อหน่วยงาน -->
-    <header class="bg-white rounded-lg shadow p-4 mb-6">
-      <div class="flex items-center gap-4">
-        <div class="w-24 h-24 bg-gray-50 rounded flex items-center justify-center overflow-hidden border">
+    <!-- ส่วนหัว: โลโก้และชื่อหน่วยงาน (มีตัวเลือกสี/ภาพพื้นหลัง) -->
+    <header id="mainHeader" class="header-bg rounded-lg shadow p-4 mb-6">
+      <div class="flex items-start gap-4">
+        <div class="w-24 h-24 bg-white/40 rounded flex items-center justify-center overflow-hidden border">
           <img id="orgLogoPreview" src="" alt="โลโก้องค์กร" class="w-full h-full object-contain hidden">
-          <span id="orgLogoPlaceholder" class="text-xs text-gray-400">โลโก้หน่วยงาน</span>
+          <span id="orgLogoPlaceholder" class="text-xs text-gray-700">โลโก้หน่วยงาน</span>
         </div>
 
         <div class="flex-1">
-          <label class="block text-sm text-gray-600 mb-1">ชื่อหน่วยงาน</label>
-          <input id="orgName" type="text" value="ชื่อหน่วยงานตัวอย่าง" class="w-full text-2xl font-semibold border-b border-transparent focus:border-primary-500 focus:outline-none bg-transparent">
-          <p class="text-xs text-gray-500 mt-1">คลิกพิมพ์เพื่อแก้ไขชื่อหน่วยงาน</p>
+          <label class="block text-sm text-white/90 mb-1">ชื่อหน่วยงาน</label>
+          <input id="orgName" type="text" value="ชื่อหน่วยงานตัวอย่าง" class="w-full text-2xl font-semibold border-b border-transparent focus:border-primary-500 focus:outline-none bg-transparent text-white placeholder-white/80">
+          <p class="text-xs text-white/80 mt-1">คลิกพิมพ์เพื่อแก้ไขชื่อหน่วยงาน</p>
         </div>
 
-        <div class="w-48 text-right">
-          <label class="block text-sm text-gray-600 mb-1">อัปโหลดโลโก้</label>
+        <div class="w-56 text-right">
+          <label class="block text-sm text-white/90 mb-1">อัปโหลดโลโก้</label>
           <input id="orgLogoInput" type="file" accept="image/*" class="block w-full text-sm"/>
+        </div>
+      </div>
+
+      <!-- ตัวเลือกพื้นหลังของส่วนหัว -->
+      <div class="mt-4 pt-4 border-t border-white/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <label class="text-sm text-white/90">สีพื้นหลัง</label>
+          <input id="headerColorPicker" type="color" value="#0ea5a4" class="w-12 h-8 p-0 border rounded">
+        </div>
+
+        <div class="flex items-center gap-3">
+          <label class="text-sm text-white/90">หรือ อัปโหลดภาพพื้นหลัง</label>
+          <input id="headerBgImageInput" type="file" accept="image/*" class="block text-sm"/>
+          <button id="clearHeaderBgBtn" class="px-3 py-1 bg-white/20 text-white rounded text-sm">ล้างพื้นหลัง</button>
         </div>
       </div>
     </header>
@@ -67,7 +89,6 @@
       </div>
 
       <div id="imageInputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <!-- สร้างช่องอัปโหลด 5 ช่อง -->
         <template id="imgInputTpl">
           <div class="border rounded p-2 bg-gray-50 flex flex-col items-center">
             <div class="w-full h-40 bg-white border rounded overflow-hidden mb-2 flex items-center justify-center">
@@ -95,17 +116,17 @@
     <div id="previewWrapper" class="space-y-4">
       <h3 class="text-lg font-semibold">ตัวอย่าง</h3>
       <div id="previewArea" class="bg-white rounded-lg shadow p-6">
-        <!-- ตัวอย่างจะแสดงที่นี่โดย JS -->
         <div id="assembledPreview" class="border rounded overflow-hidden">
-          <!-- โครงร่างตัวอย่างเริ่มต้น -->
           <div class="p-6" id="assembledContent">
-            <div class="flex items-center gap-4 mb-4">
-              <div class="w-20 h-20 bg-gray-100 flex items-center justify-center overflow-hidden" id="assembledLogoWrap">
-                <img id="assembledLogo" src="" class="object-contain w-full h-full hidden" alt="logo">
-                <span id="assembledLogoPlaceholder" class="text-xs text-gray-400">โลโก้</span>
-              </div>
-              <div class="flex-1">
-                <div id="assembledOrgName" class="text-2xl font-bold">ชื่อหน่วยงานตัวอย่าง</div>
+            <div id="assembledHeader" class="p-4 rounded mb-4 header-bg">
+              <div class="flex items-center gap-4">
+                <div class="w-20 h-20 bg-white/40 flex items-center justify-center overflow-hidden" id="assembledLogoWrap">
+                  <img id="assembledLogo" src="" class="object-contain w-full h-full hidden" alt="logo">
+                  <span id="assembledLogoPlaceholder" class="text-xs text-gray-700">โลโก้</span>
+                </div>
+                <div class="flex-1">
+                  <div id="assembledOrgName" class="text-2xl font-bold text-white">ชื่อหน่วยงานตัวอย่าง</div>
+                </div>
               </div>
             </div>
 
@@ -118,7 +139,6 @@
             </div>
 
             <div id="assembledImages" class="mt-4 grid grid-cols-2 gap-2">
-              <!-- ภาพที่อัปโหลดจะแสดงเป็นกริด -->
             </div>
           </div>
         </div>
@@ -128,11 +148,11 @@
 
   </div>
 
-  <!-- html2canvas CDN เพื่อแปลง preview เป็นภาพสำหรับดาวน์โหลด -->
+  <!-- html2canvas CDN -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
-    // Element references
+    // Elements
     const orgLogoInput = document.getElementById('orgLogoInput');
     const orgLogoPreview = document.getElementById('orgLogoPreview');
     const orgLogoPlaceholder = document.getElementById('orgLogoPlaceholder');
@@ -144,12 +164,18 @@
     const assembledOrgName = document.getElementById('assembledOrgName');
     const assembledLogo = document.getElementById('assembledLogo');
     const assembledLogoPlaceholder = document.getElementById('assembledLogoPlaceholder');
-    const assembledTitle = document.getElementById('assembledTitle');
-    const assembledBody = document.getElementById('assembledBody');
-    const assembledImages = document.getElementById('assembledImages');
 
     const previewBtn = document.getElementById('previewBtn');
     const downloadPreviewBtn = document.getElementById('downloadPreviewBtn');
+
+    // Header background controls
+    const mainHeader = document.getElementById('mainHeader');
+    const headerColorPicker = document.getElementById('headerColorPicker');
+    const headerBgImageInput = document.getElementById('headerBgImageInput');
+    const clearHeaderBgBtn = document.getElementById('clearHeaderBgBtn');
+
+    // Assembled header in preview
+    const assembledHeader = document.getElementById('assembledHeader');
 
     // Logo upload handling
     orgLogoInput.addEventListener('change', (e) => {
@@ -170,13 +196,47 @@
       assembledOrgName.textContent = orgNameInput.value || 'ชื่อหน่วยงาน';
     });
     titleInput.addEventListener('input', () => {
-      assembledTitle.querySelector('div').textContent = titleInput.value || 'หัวเรื่อง';
+      document.getElementById('assembledTitle').querySelector('div').textContent = titleInput.value || 'หัวเรื่อง';
     });
     bodyInput.addEventListener('input', () => {
-      assembledBody.textContent = bodyInput.value || '';
+      document.getElementById('assembledBody').textContent = bodyInput.value || '';
     });
 
-    // สร้าง 5 ช่องอัปโหลดภาพ
+    // Header color picker
+    headerColorPicker.addEventListener('input', (e) => {
+      const color = e.target.value;
+      mainHeader.style.backgroundImage = '';
+      mainHeader.style.backgroundColor = color;
+      assembledHeader.style.backgroundImage = '';
+      assembledHeader.style.backgroundColor = color;
+      // ensure text readable: if dark bg, keep white text (we keep white)
+      // hide any existing bg image url stored on input
+    });
+
+    // Header background image upload
+    headerBgImageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      mainHeader.style.backgroundImage = `url('${url}')`;
+      mainHeader.style.backgroundColor = 'transparent';
+      mainHeader.classList.add('header-bg');
+      assembledHeader.style.backgroundImage = `url('${url}')`;
+      assembledHeader.style.backgroundColor = 'transparent';
+      assembledHeader.classList.add('header-bg');
+    });
+
+    // Clear header background -> reset to color picker's value
+    clearHeaderBgBtn.addEventListener('click', () => {
+      headerBgImageInput.value = '';
+      const color = headerColorPicker.value || '#0ea5a4';
+      mainHeader.style.backgroundImage = '';
+      mainHeader.style.backgroundColor = color;
+      assembledHeader.style.backgroundImage = '';
+      assembledHeader.style.backgroundColor = color;
+    });
+
+    // Images slots (5)
     const imageInputsWrap = document.getElementById('imageInputs');
     const imgTpl = document.getElementById('imgInputTpl').content;
     const imageSlots = [];
@@ -211,7 +271,6 @@
       imageSlots.push({ input, previewImg, placeholder, removeBtn });
     }
 
-    // ปุ่มล้างภาพทั้งหมด
     document.getElementById('clearImagesBtn').addEventListener('click', () => {
       imageSlots.forEach(s => {
         s.input.value = '';
@@ -223,7 +282,7 @@
       updateAssembledImages();
     });
 
-    // ฟังก์ชันอัปเดตกริดภาพในตัวอย่าง
+    const assembledImages = document.getElementById('assembledImages');
     function updateAssembledImages() {
       assembledImages.innerHTML = '';
       imageSlots.forEach(s => {
@@ -237,42 +296,39 @@
           assembledImages.appendChild(wrapper);
         }
       });
-      // ปรับ layout ถ้าไม่มีภาพ
       if (!assembledImages.children.length) {
         assembledImages.innerHTML = '<div class="text-sm text-gray-400">ยังไม่มีภาพประกอบ</div>';
       }
     }
 
-    // เมื่อกด Preview: ปรับข้อมูลล่าสุดแล้วแสดงปุ่มดาวน์โหลด
-    previewBtn.addEventListener('click', async () => {
-      // อัปเดตตัวอย่างก่อน
+    // Preview and download
+    previewBtn.addEventListener('click', () => {
       assembledOrgName.textContent = orgNameInput.value || assembledOrgName.textContent;
-      assembledTitle.querySelector('div').textContent = titleInput.value || assembledTitle.textContent;
-      assembledBody.textContent = bodyInput.value || assembledBody.textContent;
+      document.getElementById('assembledTitle').querySelector('div').textContent = titleInput.value || '';
+      document.getElementById('assembledBody').textContent = bodyInput.value || '';
       updateAssembledImages();
-
-      // แสดงปุ่มดาวน์โหลด
       downloadPreviewBtn.classList.remove('hidden');
-      // เลื่อนหน้าจอไปยังตัวอย่าง (UX)
       document.getElementById('previewArea').scrollIntoView({ behavior: 'smooth' });
     });
 
-    // ดาวน์โหลด preview เป็น PNG โดยใช้ html2canvas
     downloadPreviewBtn.addEventListener('click', () => {
       const target = document.getElementById('assembledContent');
-      // ปรับสเกลและพื้นหลังให้เหมาะสม
       html2canvas(target, { backgroundColor: null, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
         link.download = (orgNameInput.value || 'preview') + '.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
-      }).catch(err => {
+      }).catch(() => {
         alert('เกิดข้อผิดพลาดในการสร้างภาพตัวอย่าง');
       });
     });
 
-    // กำหนดค่าเริ่มต้นของ assembledImages
-    updateAssembledImages();
+    // เริ่มต้นค่า header ด้วยสีจาก picker
+    (function initHeader() {
+      const color = headerColorPicker.value || '#0ea5a4';
+      mainHeader.style.backgroundColor = color;
+      assembledHeader.style.backgroundColor = color;
+    })();
   </script>
 
 </body>
