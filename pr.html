@@ -3,52 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Police7 One Page Summary - PR</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>ระบบประชาสัมพันธ์หน่วยงาน</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 font-sans">
 
   <!-- ส่วนหัว -->
-  <header>
-    <label>โลโก้หน่วยงาน: <input type="file" id="logoUpload" accept="image/*" /></label>
-    <label>ชื่อหน่วยงาน: <input type="text" id="agencyInput" value="สถานีตำรวจภูธร..." oninput="updateAgencyName()" /></label>
-    <label>พื้นหลัง: <input type="color" id="bgColor" value="#800000" /></label>
-    <label>แบบตัวอักษร:
-      <select id="fontSelect">
+  <header class="flex flex-col p-5 bg-red-900 text-white space-y-3">
+    <label class="block">โลโก้หน่วยงาน: <input type="file" id="logoUpload" accept="image/*" class="mt-1" /></label>
+    <label class="block">ชื่อหน่วยงาน: <input type="text" id="agencyInput" value="สถานีตำรวจภูธรองค์พระ" oninput="updateAgencyName()" class="mt-1 p-2 rounded text-black" /></label>
+    <label class="block">พื้นหลัง: <input type="color" id="bgColor" value="#800000" class="mt-1" /></label>
+    <label class="block">แบบตัวอักษร:
+      <select id="fontSelect" class="mt-1 p-2 rounded text-black">
         <option value="Prompt">Prompt</option>
         <option value="TH Sarabun New">TH Sarabun New</option>
         <option value="Arial">Arial</option>
       </select>
     </label>
-    <label>สีตัวอักษร: <input type="color" id="textColor" value="#ffffff" /></label>
-    <h1 id="agencyName">สถานีตำรวจ...</h1>
+    <label class="block">สีตัวอักษร: <input type="color" id="textColor" value="#ffffff" class="mt-1" /></label>
+    <h1 id="agencyName" class="text-3xl font-bold mt-4">สถานีตำรวจภูธรองค์พระ</h1>
   </header>
 
   <!-- ส่วนหัวเรื่อง -->
-  <div class="section">
-    <label>หัวเรื่อง: <input type="text" id="headline" style="width:100%; font-size:1.2em;" /></label><br/>
-    <label>สีพื้นหลังหัวเรื่อง: <input type="color" id="headlineBg" value="#eeeeee" /></label>
-  </div>
+  <section class="p-5 bg-white m-3 rounded shadow space-y-2">
+    <label class="block">หัวเรื่อง: <input type="text" id="headline" class="w-full p-2 border rounded" /></label>
+    <label class="block">สีพื้นหลังหัวเรื่อง: <input type="color" id="headlineBg" value="#eeeeee" class="mt-1" /></label>
+  </section>
 
   <!-- ส่วนเนื้อหา -->
-  <div class="section">
-    <label>เนื้อหา: <textarea id="mainContent" rows="8" style="width:100%;"></textarea></label>
-  </div>
+  <section class="p-5 bg-white m-3 rounded shadow">
+    <label class="block">เนื้อหา:</label>
+    <textarea id="mainContent" rows="8" class="w-full p-2 border rounded mt-1"></textarea>
+  </section>
 
   <!-- ส่วนภาพประกอบ -->
-  <div class="section image-upload">
-    <label>ภาพประกอบ (สูงสุด 5 ภาพ):</label><br/>
-    <input type="file" accept="image/*" multiple id="imageUpload" />
-  </div>
+  <section class="p-5 bg-white m-3 rounded shadow">
+    <label class="block mb-2">ภาพประกอบ (สูงสุด 5 ภาพ):</label>
+    <input type="file" accept="image/*" multiple id="imageUpload" class="block" />
+  </section>
 
   <!-- ปุ่ม Preview และ Download -->
-  <div class="section">
-    <button onclick="generatePreview()">Preview</button>
-    <button onclick="downloadAsImage()">Download JPG</button>
-  </div>
+  <section class="p-5 bg-white m-3 rounded shadow flex gap-4">
+    <button onclick="generatePreview()" class="px-4 py-2 bg-red-900 text-white rounded hover:bg-red-700">Preview</button>
+    <button onclick="downloadAsImage()" class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600">Download JPG</button>
+  </section>
 
   <!-- พื้นที่แสดง Preview -->
-  <div id="previewArea" class="preview"></div>
+  <section id="previewArea" class="border-2 border-dashed border-gray-400 p-5 m-5 bg-white rounded shadow"></section>
 
   <!-- Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
