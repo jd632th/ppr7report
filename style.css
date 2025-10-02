@@ -1,0 +1,45 @@
+body {
+  font-family: 'Prompt', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+header {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #800000;
+  color: white;
+}
+header input, header select {
+  margin: 5px;
+}
+.section {
+  padding: 20px;
+  background-color: white;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+.preview {
+  border: 2px dashed #aaa;
+  padding: 20px;
+  margin: 20px;
+  background-color: #fff;
+}
+.image-upload input {
+  display: block;
+  margin-bottom: 10px;
+}
+button {
+  padding: 10px 20px;
+  background-color: #800000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #a00000;
+}
