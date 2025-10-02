@@ -14,9 +14,7 @@ function generatePreview() {
     reader.onload = function(e) {
       const logoImg = document.createElement('img');
       logoImg.src = e.target.result;
-      logoImg.style.height = '80px';
-      logoImg.style.float = 'left';
-      logoImg.style.marginRight = '20px';
+      logoImg.className = 'h-20 float-left mr-4';
       preview.appendChild(logoImg);
     };
     reader.readAsDataURL(logoFile);
@@ -26,9 +24,7 @@ function generatePreview() {
   const agencyName = document.getElementById('agencyInput').value;
   const agencyDiv = document.createElement('div');
   agencyDiv.textContent = agencyName;
-  agencyDiv.style.fontSize = '2em';
-  agencyDiv.style.fontWeight = 'bold';
-  agencyDiv.style.marginBottom = '10px';
+  agencyDiv.className = 'text-2xl font-bold mb-4';
   preview.appendChild(agencyDiv);
 
   // ตั้งค่าฟอนต์และสี
@@ -43,16 +39,14 @@ function generatePreview() {
   const headlineDiv = document.createElement('div');
   headlineDiv.textContent = headline;
   headlineDiv.style.backgroundColor = headlineBg;
-  headlineDiv.style.padding = '10px';
-  headlineDiv.style.fontSize = '1.5em';
-  headlineDiv.style.marginBottom = '10px';
+  headlineDiv.className = 'p-3 text-xl font-semibold mb-3 rounded';
   preview.appendChild(headlineDiv);
 
   // เนื้อหา
   const content = document.getElementById('mainContent').value;
   const contentDiv = document.createElement('div');
   contentDiv.textContent = content;
-  contentDiv.style.marginTop = '10px';
+  contentDiv.className = 'mt-2 whitespace-pre-line';
   preview.appendChild(contentDiv);
 
   // ภาพประกอบ
@@ -62,8 +56,7 @@ function generatePreview() {
     imgReader.onload = function(e) {
       const img = document.createElement('img');
       img.src = e.target.result;
-      img.style.width = '200px';
-      img.style.margin = '10px';
+      img.className = 'w-48 m-2 inline-block';
       preview.appendChild(img);
     };
     imgReader.readAsDataURL(imageFiles[i]);
