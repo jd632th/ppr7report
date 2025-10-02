@@ -4,60 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ระบบประชาสัมพันธ์หน่วยงาน</title>
-  <style>
-    body {
-      font-family: 'Prompt', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-    header {
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-      background-color: #800000;
-      color: white;
-    }
-    header input, header select {
-      margin: 5px;
-    }
-    .section {
-      padding: 20px;
-      background-color: white;
-      margin: 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    .preview {
-      border: 2px dashed #aaa;
-      padding: 20px;
-      margin: 20px;
-      background-color: #fff;
-    }
-    .image-upload input {
-      display: block;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #800000;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #a00000;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- ส่วนหัว -->
   <header>
     <label>โลโก้หน่วยงาน: <input type="file" id="logoUpload" accept="image/*" /></label>
-    <label>ชื่อหน่วยงาน: <input type="text" id="agencyInput" value="สถานีตำรวจ..." oninput="updateAgencyName()" /></label>
+    <label>ชื่อหน่วยงาน: <input type="text" id="agencyInput" value="สถานีตำรวจภูธรองค์พระ" oninput="updateAgencyName()" /></label>
     <label>พื้นหลัง: <input type="color" id="bgColor" value="#800000" /></label>
     <label>แบบตัวอักษร:
       <select id="fontSelect">
@@ -67,7 +21,7 @@
       </select>
     </label>
     <label>สีตัวอักษร: <input type="color" id="textColor" value="#ffffff" /></label>
-    <h1 id="agencyName">สถานีตำรวจภูธรองค์พระ</h1>
+    <h1 id="agencyName">สถานีตำรวจ...</h1>
   </header>
 
   <!-- ส่วนหัวเรื่อง -->
@@ -98,88 +52,6 @@
 
   <!-- Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script>
-    function updateAgencyName() {
-      const input = document.getElementById('agencyInput').value;
-      document.getElementById('agencyName').textContent = input;
-    }
-
-    function generatePreview() {
-      const preview = document.getElementById('previewArea');
-      preview.innerHTML = '';
-
-      // โลโก้
-      const logoFile = document.getElementById('logoUpload').files[0];
-      if (logoFile) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const logoImg = document.createElement('img');
-          logoImg.src = e.target.result;
-          logoImg.style.height = '80px';
-          logoImg.style.float = 'left';
-          logoImg.style.marginRight = '20px';
-          preview.appendChild(logoImg);
-        };
-        reader.readAsDataURL(logoFile);
-      }
-
-      // ชื่อหน่วยงาน
-      const agencyName = document.getElementById('agencyInput').value;
-      const agencyDiv = document.createElement('div');
-      agencyDiv.textContent = agencyName;
-      agencyDiv.style.fontSize = '2em';
-      agencyDiv.style.fontWeight = 'bold';
-      agencyDiv.style.marginBottom = '10px';
-      preview.appendChild(agencyDiv);
-
-      // ตั้งค่าฟอนต์และสี
-      const font = document.getElementById('fontSelect').value;
-      const textColor = document.getElementById('textColor').value;
-      const headlineBg = document.getElementById('headlineBg').value;
-      preview.style.fontFamily = font;
-      preview.style.color = textColor;
-
-      // หัวเรื่อง
-      const headline = document.getElementById('headline').value;
-      const headlineDiv = document.createElement('div');
-      headlineDiv.textContent = headline;
-      headlineDiv.style.backgroundColor = headlineBg;
-      headlineDiv.style.padding = '10px';
-      headlineDiv.style.fontSize = '1.5em';
-      headlineDiv.style.marginBottom = '10px';
-      preview.appendChild(headlineDiv);
-
-      // เนื้อหา
-      const content = document.getElementById('mainContent').value;
-      const contentDiv = document.createElement('div');
-      contentDiv.textContent = content;
-      contentDiv.style.marginTop = '10px';
-      preview.appendChild(contentDiv);
-
-      // ภาพประกอบ
-      const imageFiles = document.getElementById('imageUpload').files;
-      for (let i = 0; i < Math.min(imageFiles.length, 5); i++) {
-        const imgReader = new FileReader();
-        imgReader.onload = function(e) {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.style.width = '200px';
-          img.style.margin = '10px';
-          preview.appendChild(img);
-        };
-        imgReader.readAsDataURL(imageFiles[i]);
-      }
-    }
-
-    function downloadAsImage() {
-      html2canvas(document.getElementById('previewArea')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'preview.jpg';
-        link.href = canvas.toDataURL('image/jpeg');
-        link.click();
-      });
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
