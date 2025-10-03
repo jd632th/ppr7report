@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ตำรวจภูธรภาค 7 - รายงานผลการปฏิบัติงาน</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ฟอนต์ภาษาไทย (Sarabun) -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root { --primary-bg: #0ea5a4; --accent-bg: #f97316; }
+    html,body { height:100%; font-family: 'Sarabun', sans-serif; }
+    /* ให้ tailwind รู้จักฟอนต์ */
+    .font-th { font-family: 'Sarabun', sans-serif; }
+    /* พื้นที่ตัวอย่างที่จะแปลงเป็นรูปภาพ */
+    #previewArea { width: 100%; max-width: 900px; margin: 0 auto; }
+  </style>
+  <body class="bg-gray-100 font-th text-gray-800">
+
+  <div class="min-h-screen p-6">
+
+    <!-- ส่วนหัว: โลโก้และชื่อหน่วยงาน -->
+    <header class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-24 h-24 bg-gray-50 rounded flex items-center justify-center overflow-hidden border">
+          <img id="orgLogoPreview" src="" alt="โลโก้องค์กร" class="w-full h-full object-contain hidden">
+          <span id="orgLogoPlaceholder" class="text-xs text-gray-400">โลโก้หน่วยงาน</span>
+        </div>
+
+        <div class="flex-1">
+          <label class="block text-sm text-gray-600 mb-1">ชื่อหน่วยงาน</label>
+          <input id="orgName" type="text" value="สถานีตำรวจ..." class="w-full text-2xl font-semibold border-b border-transparent focus:border-primary-500 focus:outline-none bg-transparent">
+          <p class="text-xs text-gray-500 mt-1">คลิกพิมพ์เพื่อแก้ไขชื่อหน่วยงาน</p>
+        </div>
+
+        <div class="w-48 text-right">
+          <label class="block text-sm text-gray-600 mb-1">อัปโหลดโลโก้</label>
+          <input id="orgLogoInput" type="file" accept="image/*" class="block w-full text-sm"/>
+        </div>
+      </div>
+    </header>
+
+    <!-- ส่วนหัวเรื่อง: พื้นหลังเด่นชัด -->
+    <section class="rounded-lg shadow overflow-hidden mb-6">
+      <div class="bg-gradient-to-r from-teal-500 to-amber-500 text-white p-6">
+        <label class="block text-sm text-white/90 mb-1">หัวเรื่อง</label>
+        <input id="titleInput" type="text" value="หัวเรื่องรายงาน" class="w-full text-3xl font-bold bg-transparent focus:outline-none text-white placeholder-white/70"/>
+      </div>
+    </section>
+
+    <!-- ส่วนเนื้อหา: พื้นขาว มีช่องพิมพ์ -->
+    <section class="bg-white rounded-lg shadow p-6 mb-6">
+      <label class="block text-sm text-gray-600 mb-2">เนื้อหา</label>
+      <textarea id="bodyInput" rows="8" class="w-full border p-3 rounded resize-vertical" placeholder="พิมพ์เนื้อหาที่นี่...">...</textarea>
+    </section>
+
+    <!-- ส่วนภาพประกอบ: Upload 5 ภาพ -->
+    <section class="bg-white rounded-lg shadow p-6 mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">ภาพประกอบ (อัปโหลดได้ 5 รูป)</h3>
+        <button id="clearImagesBtn" class="px-3 py-1 bg-red-500 text-white rounded text-sm">ล้างภาพทั้งหมด</button>
+      </div>
+
+      <div id="imageInputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- สร้างช่องอัปโหลด 5 ช่อง -->
+        <template id="imgInputTpl">
+          <div class="border rounded p-2 bg-gray-50 flex flex-col items-center">
+            <div class="w-full h-40 bg-white border rounded overflow-hidden mb-2 flex items-center justify-center">
+              <img class="object-cover w-full h-full hidden" alt="preview">
+              <span class="text-xs text-gray-400">ยังไม่มีภาพ</span>
+            </div>
+            <input type="file" accept="image/*" class="w-full text-sm image-input">
+            <button class="mt-2 w-full text-sm py-1 bg-gray-200 rounded remove-image-btn hidden">ลบภาพ</button>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- ส่วนท้าย: ปุ่ม preview -->
+    <footer class="mb-8">
+      <div class="flex gap-3">
+        <label class="block text-sm text-gray-600 mb-2">ให้กดปุ่ม Preview จากนั้นจะมีปุ่มให้ Download ภาพ</label>
+        <button id="previewBtn" class="px-5 py-3 bg-sky-600 text-white rounded shadow">Preview</button>
+        <button id="downloadPreviewBtn" class="px-5 py-3 bg-green-600 text-white rounded shadow hidden">ดาวน์โหลด Preview เป็น PNG</button>
+      </div>
+    </footer>
+
+    <hr class="my-6">
+
+    <!-- โซนแสดงตัวอย่างด้านล่าง -->
+    <div id="previewWrapper" class="space-y-4">
+      <h3 class="text-lg font-semibold">ตัวอย่าง</h3>
+      <div id="previewArea" class="bg-white rounded-lg shadow p-6">
+        <!-- ตัวอย่างจะแสดงที่นี่โดย JS -->
+        <div id="assembledPreview" class="border rounded overflow-hidden">
+          <!-- โครงร่างตัวอย่างเริ่มต้น -->
+          <div class="p-6" id="assembledContent">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-20 h-20 bg-gray-100 flex items-center justify-center overflow-hidden" id="assembledLogoWrap">
+                <img id="assembledLogo" src="" class="object-contain w-full h-full hidden" alt="logo">
+                <span id="assembledLogoPlaceholder" class="text-xs text-gray-400">โลโก้</span>
+              </div>
+              <div class="flex-1">
+                <div id="assembledOrgName" class="text-2xl font-bold">ชื่อหน่วยงานตัวอย่าง</div>
+              </div>
+            </div>
+
+            <div id="assembledTitle" class="mb-4 p-4 text-white rounded" style="background: linear-gradient(90deg,#0ea5a4,#f97316);">
+              <div class="text-2xl font-extrabold">หัวเรื่องเด่นชัดของรายงาน</div>
+            </div>
+
+            <div id="assembledBody" class="bg-white p-4 text-gray-800 border rounded">
+              ตัวอย่างเนื้อหา: รายงานฉบับนี้จัดทำขึ้นเพื่อ...
+            </div>
+
+            <div id="assembledImages" class="mt-4 grid grid-cols-2 gap-2">
+              <!-- ภาพที่อัปโหลดจะแสดงเป็นกริด -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="text-sm text-gray-500">กด ดาวน์โหลด Preview เป็น PNG เพื่อบันทึกภาพตัวอย่าง (ไฟล์เดียวของส่วนที่แสดง)</p>
+    </div>
+
+  </div>
+
+  <!-- html2canvas CDN เพื่อแปลง preview เป็นภาพสำหรับดาวน์โหลด -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <script>
+    // Element references
+    const orgLogoInput = document.getElementById('orgLogoInput');
+    const orgLogoPreview = document.getElementById('orgLogoPreview');
+    const orgLogoPlaceholder = document.getElementById('orgLogoPlaceholder');
+    const orgNameInput = document.getElementById('orgName');
+
+    const titleInput = document.getElementById('titleInput');
+    const bodyInput = document.getElementById('bodyInput');
+
+    const assembledOrgName = document.getElementById('assembledOrgName');
+    const assembledLogo = document.getElementById('assembledLogo');
+    const assembledLogoPlaceholder = document.getElementById('assembledLogoPlaceholder');
+    const assembledTitle = document.getElementById('assembledTitle');
+    const assembledBody = document.getElementById('assembledBody');
+    const assembledImages = document.getElementById('assembledImages');
+
+    const previewBtn = document.getElementById('previewBtn');
+    const downloadPreviewBtn = document.getElementById('downloadPreviewBtn');
+
+    // Logo upload handling
+    orgLogoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      orgLogoPreview.src = url;
+      orgLogoPreview.classList.remove('hidden');
+      orgLogoPlaceholder.classList.add('hidden');
+
+      assembledLogo.src = url;
+      assembledLogo.classList.remove('hidden');
+      assembledLogoPlaceholder.classList.add('hidden');
+    });
+
+    // Sync text inputs to assembled preview live
+    orgNameInput.addEventListener('input', () => {
+      assembledOrgName.textContent = orgNameInput.value || 'ชื่อหน่วยงาน';
+    });
+    titleInput.addEventListener('input', () => {
+      assembledTitle.querySelector('div').textContent = titleInput.value || 'หัวเรื่อง';
+    });
+    bodyInput.addEventListener('input', () => {
+      assembledBody.textContent = bodyInput.value || '';
+    });
+
+    // สร้าง 5 ช่องอัปโหลดภาพ
+    const imageInputsWrap = document.getElementById('imageInputs');
+    const imgTpl = document.getElementById('imgInputTpl').content;
+    const imageSlots = [];
+    for (let i = 0; i < 5; i++) {
+      const node = document.importNode(imgTpl, true);
+      const input = node.querySelector('.image-input');
+      const previewImg = node.querySelector('img');
+      const placeholder = node.querySelector('span');
+      const removeBtn = node.querySelector('.remove-image-btn');
+
+      input.addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const url = URL.createObjectURL(f);
+        previewImg.src = url;
+        previewImg.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+        removeBtn.classList.remove('hidden');
+        updateAssembledImages();
+      });
+
+      removeBtn.addEventListener('click', () => {
+        input.value = '';
+        previewImg.src = '';
+        previewImg.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        removeBtn.classList.add('hidden');
+        updateAssembledImages();
+      });
+
+      imageInputsWrap.appendChild(node);
+      imageSlots.push({ input, previewImg, placeholder, removeBtn });
+    }
+
+    // ปุ่มล้างภาพทั้งหมด
+    document.getElementById('clearImagesBtn').addEventListener('click', () => {
+      imageSlots.forEach(s => {
+        s.input.value = '';
+        s.previewImg.src = '';
+        s.previewImg.classList.add('hidden');
+        s.placeholder.classList.remove('hidden');
+        s.removeBtn.classList.add('hidden');
+      });
+      updateAssembledImages();
+    });
+
+    // ฟังก์ชันอัปเดตกริดภาพในตัวอย่าง
+    function updateAssembledImages() {
+      assembledImages.innerHTML = '';
+      imageSlots.forEach(s => {
+        if (s.previewImg.src) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'w-full h-40 bg-gray-100 overflow-hidden rounded';
+          const img = document.createElement('img');
+          img.src = s.previewImg.src;
+          img.className = 'w-full h-full object-cover';
+          wrapper.appendChild(img);
+          assembledImages.appendChild(wrapper);
+        }
+      });
+      // ปรับ layout ถ้าไม่มีภาพ
+      if (!assembledImages.children.length) {
+        assembledImages.innerHTML = '<div class="text-sm text-gray-400">ยังไม่มีภาพประกอบ</div>';
+      }
+    }
+
+    // เมื่อกด Preview: ปรับข้อมูลล่าสุดแล้วแสดงปุ่มดาวน์โหลด
+    previewBtn.addEventListener('click', async () => {
+      // อัปเดตตัวอย่างก่อน
+      assembledOrgName.textContent = orgNameInput.value || assembledOrgName.textContent;
+      assembledTitle.querySelector('div').textContent = titleInput.value || assembledTitle.textContent;
+      assembledBody.textContent = bodyInput.value || assembledBody.textContent;
+      updateAssembledImages();
+
+      // แสดงปุ่มดาวน์โหลด
+      downloadPreviewBtn.classList.remove('hidden');
+      // เลื่อนหน้าจอไปยังตัวอย่าง (UX)
+      document.getElementById('previewArea').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // ดาวน์โหลด preview เป็น PNG โดยใช้ html2canvas
+    downloadPreviewBtn.addEventListener('click', () => {
+      const target = document.getElementById('assembledContent');
+      // ปรับสเกลและพื้นหลังให้เหมาะสม
+      html2canvas(target, { backgroundColor: null, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = (orgNameInput.value || 'preview') + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert('เกิดข้อผิดพลาดในการสร้างภาพตัวอย่าง');
+      });
+    });
+
+    // กำหนดค่าเริ่มต้นของ assembledImages
+    updateAssembledImages();
+  </script>
+  </body>
+</html>
