@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editable Report Builder</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- html2canvas for download -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body class="bg-gray-100 p-4">
+
+  <!-- Controls Panel -->
+  <div class="space-y-6 mb-8">
+    <!-- Header Controls -->
+    <div class="p-4 bg-white rounded shadow">
+      <h2 class="text-lg font-semibold mb-2">ส่วนหัว (Header)</h2>
+      <div class="flex flex-col space-y-2">
+        <label>
+          Logo:
+          <input type="file" id="logoInput" accept="image/*"/>
+        </label>
+        <label>
+          ชื่อหน่วยงาน:
+          <input type="text" id="agencyNameInput" class="mt-1 w-full border rounded px-2 py-1" value="ชื่อหน่วยงานของคุณ"/>
+        </label>
+        <div class="flex space-x-2">
+          <label class="flex-1">
+            สีตัวอักษร:
+            <input type="color" id="headerTextColorInput" class="w-full h-8 p-0 mt-1" value="#ffffff"/>
+          </label>
+          <label class="flex-1">
+            สีพื้นหลัง:
+            <input type="color" id="headerBgColorInput" class="w-full h-8 p-0 mt-1" value="#1f2937"/>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Title Controls -->
+    <div class="p-4 bg-white rounded shadow">
+      <h2 class="text-lg font-semibold mb-2">หัวข้อรายงาน</h2>
+      <input type="text" id="titleInput" class="mt-1 w-full border rounded px-2 py-1" value="หัวข้อรายงานของคุณ"/>
+      <div class="mt-2 flex space-x-2">
+        <label class="flex-1">
+          สีตัวอักษร:
+          <input type="color" id="titleTextColorInput" class="w-full h-8 p-0 mt-1" value="#111827"/>
+        </label>
+        <label class="flex-1">
+          สีพื้นหลัง:
+          <input type="color" id="titleBgColorInput" class="w-full h-8 p-0 mt-1" value="#f3f4f6"/>
+        </label>
+      </div>
+    </div>
+
+    <!-- Date Controls -->
+    <div class="p-4 bg-white rounded shadow">
+      <h2 class="text-lg font-semibold mb-2">วันที่รายงาน</h2>
+      <input type="date" id="dateInput" class="mt-1 border rounded px-2 py-1 w-full" />
+      <div class="mt-2 flex space-x-2">
+        <label class="flex-1">
+          สีตัวอักษร:
+          <input type="color" id="dateTextColorInput" class="w-full h-8 p-0 mt-1" value="#111827"/>
+        </label>
+        <label class="flex-1">
+          สีพื้นหลัง:
+          <input type="color" id="dateBgColorInput" class="w-full h-8 p-0 mt-1" value="#fef3c7"/>
+        </label>
+      </div>
+    </div>
+
+    <!-- Details Controls -->
+    <div class="p-4 bg-white rounded shadow">
+      <h2 class="text-lg font-semibold mb-2">รายละเอียด</h2>
+      <textarea id="detailsInput" rows="4" class="mt-1 w-full border rounded px-2 py-1">ใส่รายละเอียดของคุณที่นี่</textarea>
+      <div class="mt-2 flex space-x-2">
+        <label class="flex-1">
+          สีตัวอักษร:
+          <input type="color" id="detailsTextColorInput" class="w-full h-8 p-0 mt-1" value="#111827"/>
+        </label>
+        <label class="flex-1">
+          สีพื้นหลัง:
+          <input type="color" id="detailsBgColorInput" class="w-full h-8 p-0 mt-1" value="#e0f2fe"/>
+        </label>
+      </div>
+    </div>
+
+    <!-- Images Controls -->
+    <div class="p-4 bg-white rounded shadow">
+      <h2 class="text-lg font-semibold mb-2">ภาพประกอบ (5 ภาพ)</h2>
+      <div id="imageInputs" class="grid grid-cols-1 gap-2">
+        <input type="file" class="image-input" accept="image/*"/>
+        <input type="file" class="image-input" accept="image/*"/>
+        <input type="file" class="image-input" accept="image/*"/>
+        <input type="file" class="image-input" accept="image/*"/>
+        <input type="file" class="image-input" accept="image/*"/>
+      </div>
+      <div class="mt-2 flex space-x-2">
+        <label class="flex-1">
+          สีพื้นหลัง:
+          <input type="color" id="imagesBgColorInput" class="w-full h-8 p-0 mt-1" value="#ffffff"/>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Container -->
+  <div id="preview" class="max-w-md mx-auto divide-y divide-gray-200 overflow-hidden rounded shadow-lg">
+    <!-- Header -->
+    <div id="headerSection" class="flex items-center p-4" style="background-color:#1f2937; color:#fff">
+      <img id="logoPreview" src="" alt="Logo" class="h-12 w-12 object-contain mr-3 hidden"/>
+      <h1 id="agencyNamePreview" class="text-xl font-bold">ชื่อหน่วยงานของคุณ</h1>
+    </div>
+    <!-- Title -->
+    <div id="titleSection" class="p-4" style="background-color:#f3f4f6; color:#111827">
+      <h2 id="titlePreview" class="text-lg font-semibold">หัวข้อรายงานของคุณ</h2>
+    </div>
+    <!-- Date -->
+    <div id="dateSection" class="p-4" style="background-color:#fef3c7; color:#111827">
+      <p id="datePreview" class="text-sm">--/--/----</p>
+    </div>
+    <!-- Details -->
+    <div id="detailsSection" class="p-4" style="background-color:#e0f2fe; color:#111827">
+      <p id="detailsPreview" class="text-sm">ใส่รายละเอียดของคุณที่นี่</p>
+    </div>
+    <!-- Images -->
+    <div id="imagesSection" class="p-4 grid grid-cols-2 gap-2 bg-white">
+      <!-- JS will insert up to 5 previews here -->
+    </div>
+  </div>
+
+  <!-- Download Button -->
+  <div class="text-center mt-6">
+    <button id="downloadBtn" class="px-6 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700">
+      Download ภาพ
+    </button>
+  </div>
+
+  <!-- JavaScript to wire up controls -->
+  <script>
+    // Utility to update style
+    function bindColor(inputId, sectionId, cssProp) {
+      const inp = document.getElementById(inputId);
+      const sec = document.getElementById(sectionId);
+      inp.addEventListener('input', ()=> sec.style[cssProp] = inp.value );
+    }
+
+    // Logo upload
+    document.getElementById('logoInput').addEventListener('change', e => {
+      const file = e.target.files[0];
+      const img = document.getElementById('logoPreview');
+      if (file) {
+        img.src = URL.createObjectURL(file);
+        img.classList.remove('hidden');
+      } else {
+        img.classList.add('hidden');
+      }
+    });
+
+    // Text bindings
+    document.getElementById('agencyNameInput').addEventListener('input', e=>
+      document.getElementById('agencyNamePreview').textContent = e.target.value
+    );
+    document.getElementById('titleInput').addEventListener('input', e=>
+      document.getElementById('titlePreview').textContent = e.target.value
+    );
+    document.getElementById('dateInput').addEventListener('input', e=>
+      document.getElementById('datePreview').textContent = e.target.value
+    );
+    document.getElementById('detailsInput').addEventListener('input', e=>
+      document.getElementById('detailsPreview').textContent = e.target.value
+    );
+
+    // Color pickers
+    bindColor('headerTextColorInput','headerSection','color');
+    bindColor('headerBgColorInput','headerSection','backgroundColor');
+    bindColor('titleTextColorInput','titleSection','color');
+    bindColor('titleBgColorInput','titleSection','backgroundColor');
+    bindColor('dateTextColorInput','dateSection','color');
+    bindColor('dateBgColorInput','dateSection','backgroundColor');
+    bindColor('detailsTextColorInput','detailsSection','color');
+    bindColor('detailsBgColorInput','detailsSection','backgroundColor');
+    bindColor('imagesBgColorInput','imagesSection','backgroundColor');
+
+    // Image previews
+    const imageInputs = document.querySelectorAll('.image-input');
+    const imagesSection = document.getElementById('imagesSection');
+    imageInputs.forEach((inp, idx) => {
+      inp.addEventListener('change', e => {
+        const file = e.target.files[0];
+        let img = imagesSection.querySelector(`img[data-idx="${idx}"]`);
+        if (!img) {
+          img = document.createElement('img');
+          img.className = 'w-full h-32 object-cover rounded';
+          img.dataset.idx = idx;
+          imagesSection.appendChild(img);
+        }
+        if (file) {
+          img.src = URL.createObjectURL(file);
+        } else {
+          img.remove();
+        }
+      });
+    });
+
+    // Download as image
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      html2canvas(document.getElementById('preview')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'report.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    });
+  </script>
+</body>
+</html>
