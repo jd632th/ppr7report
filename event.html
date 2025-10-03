@@ -261,7 +261,7 @@
     downloadPreviewBtn.addEventListener('click', () => {
       const target = document.getElementById('assembledContent');
       // ปรับสเกลและพื้นหลังให้เหมาะสม
-      html2canvas(target, { backgroundColor: null, scale: 2 }).then(canvas => {
+      html2canvas(target, { backgroundColor: #ffffff, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
         link.download = (orgNameInput.value || 'preview') + '.png';
         link.href = canvas.toDataURL('image/png');
