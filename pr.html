@@ -114,13 +114,7 @@
     <div id="bannerSection" class="object-cover h-full w-full" style="background-color:#110F57; color:#EAF1FF">
       <img id="bannerPreview" src="" alt="Banner" class="hidden"/>
     </div>
-    <!-- Header -->
-    <!--
-    <div id="headerSection" class="flex items-center p-4" style="background-color:#110F57; color:#EAF1FF">
-      <img id="logoPreview" src="" alt="Logo" class="h-12 w-12 object-contain mr-3 hidden"/>
-      <h1 id="agencyNamePreview" class="text-xl font-bold">ชื่อหน่วยงาน...</h1>
-    </div>
-    -->
+    
     <!-- Title -->
     <div id="titleSection" class="p-4" style="background-color:#637aff; color:#110F57">
       <h2 id="titlePreview" class="text-lg font-semibold">หัวข้อรายงาน....</h2>
@@ -152,17 +146,7 @@
       inp.addEventListener('input', ()=> sec.style[cssProp] = inp.value );
     }
 
-    // Logo upload
-    /*document.getElementById('logoInput').addEventListener('change', e => {
-      const file = e.target.files[0];
-      const img = document.getElementById('logoPreview');
-      if (file) {
-        img.src = URL.createObjectURL(file);
-        img.classList.remove('hidden');
-      } else {
-        img.classList.add('hidden');
-      }
-    });*/
+    
     // Banner upload
     document.getElementById('bannerInput').addEventListener('change', e => {
       const file = e.target.files[0];
@@ -176,9 +160,7 @@
     });
 
     // Text bindings
-    document.getElementById('agencyNameInput').addEventListener('input', e=>
-      document.getElementById('agencyNamePreview').textContent = e.target.value
-    );
+    
     document.getElementById('titleInput').addEventListener('input', e=>
       document.getElementById('titlePreview').textContent = e.target.value
     );
@@ -188,8 +170,6 @@
     );
 
     // Color pickers
-    /*bindColor('headerTextColorInput','headerSection','color');
-    bindColor('headerBgColorInput','headerSection','backgroundColor');*/
     bindColor('titleTextColorInput','titleSection','color');
     bindColor('titleBgColorInput','titleSection','backgroundColor');
     bindColor('detailsTextColorInput','detailsSection','color');
