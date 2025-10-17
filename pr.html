@@ -68,22 +68,7 @@
       </div>
     </div>
 
-    <!-- Date Controls -->
-    <div class="p-4 bg-white rounded shadow">
-      <h2 class="text-lg font-semibold mb-2">วันที่รายงาน</h2>
-      <input type="date" id="dateInput" class="mt-1 border rounded px-2 py-1 w-full" />
-      <div class="mt-2 flex space-x-2">
-        <label class="flex-1">
-          สีตัวอักษร:
-          <input type="color" id="dateTextColorInput" class="w-full h-8 p-0 mt-1" value="#111827"/>
-        </label>
-        <label class="flex-1">
-          สีพื้นหลัง:
-          <input type="color" id="dateBgColorInput" class="w-full h-8 p-0 mt-1" value="#fef3c7"/>
-        </label>
-      </div>
-    </div>
-
+    
     <!-- Details Controls -->
     <div class="p-4 bg-white rounded shadow">
       <h2 class="text-lg font-semibold mb-2">รายละเอียด</h2>
@@ -134,10 +119,7 @@
     <div id="titleSection" class="p-4" style="background-color:#f3f4f6; color:#111827">
       <h2 id="titlePreview" class="text-lg font-semibold">หัวข้อรายงานของคุณ</h2>
     </div>
-    <!-- Date -->
-    <div id="dateSection" class="p-4" style="background-color:#fef3c7; color:#111827">
-      <p id="datePreview" class="text-sm">--/--/----</p>
-    </div>
+    
     <!-- Details -->
     <div id="detailsSection" class="p-4" style="background-color:#e0f2fe; color:#111827">
       <p id="detailsPreview" class="text-sm">ใส่รายละเอียดของคุณที่นี่</p>
@@ -194,9 +176,7 @@
     document.getElementById('titleInput').addEventListener('input', e=>
       document.getElementById('titlePreview').textContent = e.target.value
     );
-    document.getElementById('dateInput').addEventListener('input', e=>
-      document.getElementById('datePreview').textContent = e.target.value
-    );
+    
     document.getElementById('detailsInput').addEventListener('input', e=>
       document.getElementById('detailsPreview').textContent = e.target.value
     );
@@ -206,8 +186,6 @@
     bindColor('headerBgColorInput','headerSection','backgroundColor');
     bindColor('titleTextColorInput','titleSection','color');
     bindColor('titleBgColorInput','titleSection','backgroundColor');
-    bindColor('dateTextColorInput','dateSection','color');
-    bindColor('dateBgColorInput','dateSection','backgroundColor');
     bindColor('detailsTextColorInput','detailsSection','color');
     bindColor('detailsBgColorInput','detailsSection','backgroundColor');
     bindColor('imagesBgColorInput','imagesSection','backgroundColor');
