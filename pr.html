@@ -4,13 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PPR7 Report Builder</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <!-- html2canvas for download -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+   <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <style>
+    body {
+        font-family: 'Prompt';
+    }
+</style>
 </head>
 <body class="bg-gray-100 p-4">
 
@@ -33,11 +36,11 @@
         <div class="flex space-x-2">
           <label class="flex-1">
             สีตัวอักษร:
-            <input type="color" id="headerTextColorInput" class="w-full h-8 p-0 mt-1" value="#ffffff"/>
+            <input type="color" id="headerTextColorInput" class="w-full h-8 p-0 mt-1" value="#EAF1FF"/>
           </label>
           <label class="flex-1">
             สีพื้นหลัง:
-            <input type="color" id="headerBgColorInput" class="w-full h-8 p-0 mt-1" value="#1f2937"/>
+            <input type="color" id="headerBgColorInput" class="w-full h-8 p-0 mt-1" value="#110F57"/>
           </label>
         </div>
       </div>
@@ -59,11 +62,11 @@
       <div class="mt-2 flex space-x-2">
         <label class="flex-1">
           สีตัวอักษร:
-          <input type="color" id="titleTextColorInput" class="w-full h-8 p-0 mt-1" value="#111827"/>
+          <input type="color" id="titleTextColorInput" class="w-full h-8 p-0 mt-1" value="#110F57"/>
         </label>
         <label class="flex-1">
           สีพื้นหลัง:
-          <input type="color" id="titleBgColorInput" class="w-full h-8 p-0 mt-1" value="#f3f4f6"/>
+          <input type="color" id="titleBgColorInput" class="w-full h-8 p-0 mt-1" value="#637aff"/>
         </label>
       </div>
     </div>
@@ -76,11 +79,11 @@
       <div class="mt-2 flex space-x-2">
         <label class="flex-1">
           สีตัวอักษร:
-          <input type="color" id="detailsTextColorInput" class="w-full h-8 p-0 mt-1" value="#111827"/>
+          <input type="color" id="detailsTextColorInput" class="w-full h-8 p-0 mt-1" value="#110F57"/>
         </label>
         <label class="flex-1">
           สีพื้นหลัง:
-          <input type="color" id="detailsBgColorInput" class="w-full h-8 p-0 mt-1" value="#e0f2fe"/>
+          <input type="color" id="detailsBgColorInput" class="w-full h-8 p-0 mt-1" value="#8faaff"/>
         </label>
       </div>
     </div>
@@ -107,25 +110,25 @@
   <!-- Preview Container -->
   <div id="preview" class="mx-auto divide-y divide-gray-200 overflow-hidden rounded shadow-lg">
     <!-- Header -->
-    <div id="headerSection" class="flex items-center p-4" style="background-color:#1f2937; color:#fff">
+    <div id="headerSection" class="flex items-center p-4" style="background-color:#110F57; color:#EAF1FF">
       <img id="logoPreview" src="" alt="Logo" class="h-12 w-12 object-contain mr-3 hidden"/>
-      <h1 id="agencyNamePreview" class="text-xl font-bold">ชื่อหน่วยงานของคุณ</h1>
+      <h1 id="agencyNamePreview" class="text-2xl font-bold">ชื่อหน่วยงานของคุณ</h1>
     </div>
     <!-- Banner -->
-    <div id="bannerSection" class="flex items-center p-4" style="background-color:#1f2937; color:#fff">
+    <div id="bannerSection" class="object-cover h-full w-full" style="background-color:#110F57; color:#EAF1FF">
       <img id="bannerPreview" src="" alt="Banner" class="hidden"/>
     </div>
     <!-- Title -->
-    <div id="titleSection" class="p-4" style="background-color:#f3f4f6; color:#111827">
-      <h2 id="titlePreview" class="text-lg font-semibold">หัวข้อรายงานของคุณ</h2>
+    <div id="titleSection" class="p-4" style="background-color:#637aff; color:#110F57">
+      <h2 id="titlePreview" class="text-2xl font-semibold">หัวข้อรายงานของคุณ</h2>
     </div>
     
     <!-- Details -->
-    <div id="detailsSection" class="p-4" style="background-color:#e0f2fe; color:#111827">
-      <p id="detailsPreview" class="text-sm">ใส่รายละเอียดของคุณที่นี่</p>
+    <div id="detailsSection" class="p-4" style="background-color:#8faaff; color:#110F57">
+      <p id="detailsPreview" class="text-2xl">ใส่รายละเอียดของคุณที่นี่</p>
     </div>
     <!-- Images -->
-    <div id="imagesSection" class="p-4 grid grid-cols-2 gap-2 bg-white">
+     <div id="imagesSection" class="p-4 grid grid-cols-2 gap-2" style="background-color:#d8e4ff; color:#110F57"></div>
       <!-- JS will insert up to 5 previews here -->
     </div>
   </div>
@@ -199,7 +202,7 @@
         let img = imagesSection.querySelector(`img[data-idx="${idx}"]`);
         if (!img) {
           img = document.createElement('img');
-          img.className = 'w-full h-32 object-cover rounded';
+          img.className = 'w-full h-full object-cover rounded';
           img.dataset.idx = idx;
           imagesSection.appendChild(img);
         }
