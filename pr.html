@@ -30,6 +30,7 @@
      </div>
      </div>
     <!-- Header Controls -->
+    <!--
     <div class="p-4 bg-white rounded shadow">
       <h2 class="text-lg font-semibold mb-2">ส่วนหัว (Header)</h2>
       <div class="flex flex-col space-y-2">
@@ -54,7 +55,7 @@
         </div>
       </div>
     </div>
-    
+    -->
     <!-- Report Title Controls -->
     <div class="p-4 bg-white rounded shadow">
       <h2 class="text-lg font-semibold mb-2">หัวข้อรายงาน</h2>
@@ -114,18 +115,20 @@
       <img id="bannerPreview" src="" alt="Banner" class="hidden"/>
     </div>
     <!-- Header -->
+    <!--
     <div id="headerSection" class="flex items-center p-4" style="background-color:#110F57; color:#EAF1FF">
       <img id="logoPreview" src="" alt="Logo" class="h-12 w-12 object-contain mr-3 hidden"/>
-      <h1 id="agencyNamePreview" class="text-xl font-bold">ชื่อหน่วยงานของคุณ</h1>
+      <h1 id="agencyNamePreview" class="text-xl font-bold">ชื่อหน่วยงาน...</h1>
     </div>
+    -->
     <!-- Title -->
     <div id="titleSection" class="p-4" style="background-color:#637aff; color:#110F57">
-      <h2 id="titlePreview" class="text-lg font-semibold">หัวข้อรายงานของคุณ</h2>
+      <h2 id="titlePreview" class="text-lg font-semibold">หัวข้อรายงาน....</h2>
     </div>
     
     <!-- Details -->
     <div id="detailsSection" class="p-4" style="background-color:#8faaff; color:#110F57">
-      <p id="detailsPreview" class="text-sm">ใส่รายละเอียดของคุณที่นี่</p>
+      <p id="detailsPreview" class="text-sm">รายละเอียด....</p>
     </div>
     <!-- Images -->
      <div id="imagesSection" class="p-4 grid grid-cols-2 gap-2" style="background-color:#d8e4ff; color:#110F57"></div>
@@ -150,7 +153,7 @@
     }
 
     // Logo upload
-    document.getElementById('logoInput').addEventListener('change', e => {
+    /*document.getElementById('logoInput').addEventListener('change', e => {
       const file = e.target.files[0];
       const img = document.getElementById('logoPreview');
       if (file) {
@@ -159,7 +162,7 @@
       } else {
         img.classList.add('hidden');
       }
-    });
+    });*/
     // Banner upload
     document.getElementById('bannerInput').addEventListener('change', e => {
       const file = e.target.files[0];
@@ -185,8 +188,8 @@
     );
 
     // Color pickers
-    bindColor('headerTextColorInput','headerSection','color');
-    bindColor('headerBgColorInput','headerSection','backgroundColor');
+    /*bindColor('headerTextColorInput','headerSection','color');
+    bindColor('headerBgColorInput','headerSection','backgroundColor');*/
     bindColor('titleTextColorInput','titleSection','color');
     bindColor('titleBgColorInput','titleSection','backgroundColor');
     bindColor('detailsTextColorInput','detailsSection','color');
